@@ -1,0 +1,2 @@
+docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t sujiba/ownDynDNS-container:`cat VERSION` --push .
+docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t sujiba/ownDynDNS-container:latest --push .
