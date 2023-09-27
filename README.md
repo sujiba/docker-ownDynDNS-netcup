@@ -1,8 +1,11 @@
 # ownDynDNS-netcup
 
-This container is based on the work of 
+![docker-build](https://github.com/sujiba/ownDynDNS-netcup/actions/workflows/docker_build_push.yml/badge.svg?event=push)
+
+
+This container is based on the work of:
 * [PHP](https://hub.docker.com/_/php)
-* [Fernwerker ownDynDNS](https://github.com/fernwerker/ownDynDNS).
+* [Fernwerker ownDynDNS](https://github.com/fernwerker/ownDynDNS)
 
 ## Nectup configuration
 You need to create your dns entries beforehand:
