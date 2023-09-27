@@ -1,7 +1,8 @@
-CUSTOMER_NR="123456"
-API_PASSWORD="abcdefghijklmnopqrstuvwxyz"
-API_KEY="abcdefghijklmnopqrstuvwxyz"
-DOMAIN_LIST="domain.tld: subdomain"
-USE_IPV4=true
-USE_IPV6=false
-CHANGE_TTL=true
+username="max_mustermann"
+password="s3cr3t"
+customerId="netcup customer ID"
+apiKey="netcup DNS API Key"
+apiPassword="netcup DNS API Password"
+debug=true
+log=true
+logFile=log.json
