@@ -1,2 +1,2 @@
-docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t sujiba/ownDynDNS-netcup:`cat VERSION` --push .
-docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t sujiba/ownDynDNS-netcup:latest --push .
+docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t sujiba/owndyndns-netcup:`cat VERSION` --push .
+docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t sujiba/owndyndns-netcup:latest --push .

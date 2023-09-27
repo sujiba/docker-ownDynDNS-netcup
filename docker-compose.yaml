@@ -2,7 +2,7 @@ version: "3"
 
 services:
   ownDynDNS:
-    image: sujiba/ownDynDNS-netcup
+    image: sujiba/owndyndns-netcup
     container_name: ownDynDNS
     volumes:
       - ./config:/var/www/html/ownDynDNS/.env
