@@ -39,5 +39,5 @@ jobs:
           linux/amd64
         push: true
         tags: |
-          ${{ secrets.DOCKER_USER }}/ownDynDNS-container:${{ env.VERSION }}
-          ${{ secrets.DOCKER_USER }}/ownDynDNS-container:latest
+          ${{ secrets.DOCKER_USER }}/ownDynDNS-netcup:${{ env.VERSION }}
+          ${{ secrets.DOCKER_USER }}/ownDynDNS-netcup:latest
