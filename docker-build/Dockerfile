@@ -15,3 +15,5 @@ RUN apt-get update -y && \
 
 WORKDIR /var/www/html
 COPY --from=0 /clone-workspace/ownDynDNS /var/www/html
+
+RUN chown -R www-data:www-data /var/www/html/
