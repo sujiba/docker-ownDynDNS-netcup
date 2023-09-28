@@ -7,6 +7,7 @@ RUN git clone https://github.com/fernwerker/ownDynDNS.git
 FROM php:apache
 
 RUN apt-get update -y && \
+    apt-get upgrade -y && \
     apt-get install -y \
       libxml2-dev && \
     apt-get clean -y && \
