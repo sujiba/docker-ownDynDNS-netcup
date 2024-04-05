@@ -15,5 +15,6 @@ RUN apt-get update -y && \
 
 WORKDIR /var/www/html
 COPY --from=0 /clone-workspace/ownDynDNS /var/www/html
+COPY --from /clone-workspace/ownDynDNS/.htaccess.example /var/www/html/.htaccess
 
 RUN chown -R www-data:www-data /var/www/html/
