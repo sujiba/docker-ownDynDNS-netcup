@@ -1,0 +1,8 @@
+username="max_mustermann"
+password="s3cr3t"
+customerId="netcup customer ID"
+apiKey="netcup DNS API Key"
+apiPassword="netcup DNS API Password"
+debug=true
+log=true
+logFile=log.json

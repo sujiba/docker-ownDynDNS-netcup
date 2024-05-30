@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  ownDynDNS:
+    image: sujiba/docker-owndyndns-netcup
+    container_name: ownDynDNS
+    # Run container behind reverse proxy
+    ports:
+      - "127.0.0.1:8081:80"
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - ./config:/var/www/html/ownDynDNS/.env
+    restart: unless-stopped
