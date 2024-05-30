@@ -1,7 +1,12 @@
 # ownDynDNS-netcup
 
-![docker-build](https://github.com/sujiba/ownDynDNS-netcup/actions/workflows/docker_build_push.yml/badge.svg?event=push)
+- [ownDynDNS-netcup](#owndyndns-netcup)
+  - [acknowledgments](#acknowledgments)
+  - [Nectup configuration](#nectup-configuration)
+  - [Container configuration](#container-configuration)
+  - [Fritz!Box configuration](#fritzbox-configuration)
 
+## acknowledgments
 
 This container is based on the work of:
 * [PHP](https://hub.docker.com/_/php)
@@ -25,7 +30,7 @@ cd /opt/docker/owndyndns
 # Create docker-compose.yml and copy the contents from repository file
 vi docker-compose.yml
 
-# Create config, copy the contents from repository file and change the parameters
+# Create config, copy the contents from repository example.config and change the parameters
 vi config
 
 # Start the Container with
