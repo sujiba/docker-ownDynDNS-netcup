@@ -34,7 +34,7 @@ jobs:
           # Create 
           new_release=$(date +'%Y').$(date +'mY').$counter
           echo "RELEASE=$new_release">> $GITHUB_ENV
-          echo "Release $new_release successfully set
+          echo "Release $new_release successfully set"
 
   build:
     needs: release_tag
