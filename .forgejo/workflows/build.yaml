@@ -32,7 +32,7 @@ jobs:
           fi
 
           # Create 
-          new_release=$(date +'%Y').$(date +'mY').$counter
+          new_release=$(date +'%Y').$(date +'m').$counter
           echo "RELEASE=$new_release">> $GITHUB_ENV
           echo "Release $new_release successfully set"
 
