@@ -19,12 +19,12 @@ jobs:
           latest_release=$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .tag_name')
 
           # Cut release into year, month and counter.
-          release_year=$(echo $latest_release | awk -F '.' '//{print $1}')
-          release_month=$(echo $latest_release | awk -F '.' '//{print $2}')
+          year=$(echo $latest_release | awk -F '.' '//{print $1}')
+          month=$(echo $latest_release | awk -F '.' '//{print $2}')
           counter=$(echo $latest_release | awk -F '.' '//{print $3}')
 
           # increase the counter, if the release is from the same year and month
-          if [ $(date +'%Y') -eq release_year ] && [ $(date +'%m') -eq release_month ]; then
+          if [ $(date +'%Y') -eq $year ] && [ $(date +'%m') -eq $month ]; then
             ((counter++));
           # else reset counter
           else
