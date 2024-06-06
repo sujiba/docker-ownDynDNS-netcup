@@ -55,7 +55,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          endpoint: tcp://forgejo-docker-in-docker-1:2375
+          endpoint: tcp://forgejo-docker-in-docker-1:2376
 
       - name: Build and push
         uses: docker/build-push-action@v5
