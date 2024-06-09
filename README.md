@@ -2,7 +2,7 @@
 
 - [ownDynDNS-netcup](#owndyndns-netcup)
   - [acknowledgments](#acknowledgments)
-  - [Nectup configuration](#nectup-configuration)
+  - [Netcup configuration](#netcup-configuration)
   - [Container configuration](#container-configuration)
   - [Fritz!Box configuration](#fritzbox-configuration)
 
@@ -12,7 +12,7 @@ This container is based on the work of:
 * [PHP](https://hub.docker.com/_/php)
 * [Fernwerker ownDynDNS](https://github.com/fernwerker/ownDynDNS)
 
-## Nectup configuration
+## Netcup configuration
 You need to create your dns entries beforehand:
 
 | Host     | Type  | Destination  |
