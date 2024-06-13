@@ -55,11 +55,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          endpoint: tcp://docker:2376
-          tlsverify: true
-          tlscacert: ca.pem
-          tlscert: cert.pem
-          tlskey: key.pem
+          endpoint: tcp://docker:2376#
+          buildkitd-flags: --debug
+
 
       - name: Build and push
         uses: docker/build-push-action@v5
