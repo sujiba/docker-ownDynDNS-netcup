@@ -1,5 +1,5 @@
 # Get latest app version
-FROM alpine:3.20.0
+FROM alpine:3.20.1
 WORKDIR /clone-workspace
 RUN apk update && \
     apk upgrade && \
