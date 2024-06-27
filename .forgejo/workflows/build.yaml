@@ -52,20 +52,11 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-
-      - name: Get hostname
-        shell: bash
-        run: |
-          uname -n
-          echo $DOCKER_TLS_VERIFY
-          echo $DOCKER_CERT_PATH
-          echo $DOCKER_HOST
-          docker info
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
           endpoint: tcp://docker:2376
+          buildkitd-flags: --debug
 
       - name: Build and push
         uses: docker/build-push-action@v6
