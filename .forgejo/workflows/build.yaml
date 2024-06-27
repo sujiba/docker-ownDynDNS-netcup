@@ -70,7 +70,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./docker-build
+          context: ./docker-build/
           file: ./docker-build/Dockerfile
           platforms: linux/amd64, linux/arm64, linux/arm/v7
           push: true
