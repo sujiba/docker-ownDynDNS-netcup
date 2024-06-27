@@ -55,7 +55,7 @@ jobs:
       - name: Set up Docker Buildx
         env:
           DOCKER_TLS_VERIFY: 1
-          # DOCKER_CERT_PATH: /certs/server/
+          DOCKER_CERT_PATH: /certs/client/
         uses: docker/setup-buildx-action@v3
         with:
           endpoint: tcp://docker:2376
