@@ -55,7 +55,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          endpoint: "tcp://docker:2376,ca=/certs/server/ca.pem,cert=/certs/server/cert.pem,key=/certs/server/key.pem"
+          endpoint: tcp://docker:2376
+          buildkitd-config-inline: |
+            [grpc]
+              address = [ "tcp://docker:2376" ]
+              [grpc.tls]
+                cert = "/certs/server/cert.pem"
+                key = "/certs/server/key.pem"
+                ca = "/certs/server/ca.pem"
 
       - name: Build and push
         uses: docker/build-push-action@v6
