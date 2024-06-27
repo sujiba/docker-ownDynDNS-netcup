@@ -55,8 +55,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          endpoint: tcp://docker:2376
-          buildkitd-flags: --debug
+          endpoint: "tcp://docker:2376,ca=/certs/server/ca.pem,cert=/certs/server/cert.pem,key=/certs/server/key.pem"
 
       - name: Build and push
         uses: docker/build-push-action@v6
