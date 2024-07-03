@@ -61,6 +61,8 @@ jobs:
           driver: remote
           driver-opts: cacert=/certs/client/ca.pem,cert=/certs/client/cert.pem,key=/certs/client/key.pem
           endpoint: tcp://docker:2376
+          buildkitd-flags: --debug
+          platforms: linux/amd64, linux/arm64, linux/arm/v7
 
       - name: Build and push
         uses: docker/build-push-action@v6
