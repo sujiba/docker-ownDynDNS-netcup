@@ -115,7 +115,7 @@ jobs:
           message_list=""
 
           while [[ "$j" != "$i" ]]; do
-            message=$(< /tmp/last_50_commits.json jq -r --args j "$j" '.[$j|tonumber] | .commit.message')
+            message=$(< /tmp/last_50_commits.json jq -r --arg j "$j" '.[$j|tonumber] | .commit.message')
             echo "$j $message"
             message_newline="${message}\n\""
             message_list="$message_list* $message_newline"
