@@ -78,8 +78,7 @@ jobs:
     needs: [release_tag, build]
     runs-on: ubuntu-latest
     env:
-      RELEASE: ${{ needs.release_tag.outputs.release }}
-      GH_TOKEN: "${{ secrets.GH_TOKEN }}"
+      NEW_RELEASE: ${{ needs.release_tag.outputs.release }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -87,10 +86,9 @@ jobs:
       - name: Create new release
         shell: bash
         run: |
-          echo $RELEASE
           # Get latest release "created at" timestemp
           latest_release=$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .tag_name')
-          latest_release_time=$(date -d $(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .created_at')))
+          latest_release_time=$(date -d "$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .created_at')")
           echo "Last release from $latest_release_time"
 
           # Get last 50 commits
@@ -102,11 +100,11 @@ jobs:
 
           while [[ $fin == 0 ]]; do
 
-            commit_time=$(date --date=$(cat /tmp/last_50_commits.json | jq -r --arg -i "$i" '.[$i|tonumber] | .created' ));
+            commit_time=$(date --date="$(< /tmp/last_50_commits.json jq -r --arg -i "$i" '.[$i|tonumber] | .created' )");
 
             if [[ $(date -d "$latest_release_time" +%s) -le $(date -d "$commit_time" +%s) ]]; then
               echo "$i $commit_time"
-              i=$(($i + 1));
+              i=$((i + 1))
             else
               fin=1;
             fi
@@ -115,20 +113,20 @@ jobs:
 
           # Generate list of commit messages since latest release for release message
           j=0
-          release_list=""
+          message_list=""
 
           while [[ "$j" != "$i" ]]; do
-            message=$(cat /tmp/last_50_commits.json | jq -r --args j "$j" '.[$j|tonumber] | .commit.message')
+            message=$(< /tmp/last_50_commits.json jq -r --args j "$j" '.[$j|tonumber] | .commit.message')
             echo "$j $message"
             message_newline="${message}\n\""
             message_list="$message_list* $message_newline"
-            j=$(($j + 1))
+            j=$((j + 1))
           done
 
           # Generate release message
           datetime=$(env TZ=Europe/Berlin date "+%A, %d.%m.%Y at %R")
-          body="Create automatically on $datetime by forgejo action \\n\\n $i commit(s) since relase $latest_release:\\n\\n$(echo $message_list | sed 's/"//g')"
-          echo $body
+          body="Create automatically on $datetime by forgejo action \\n\\n $i commit(s) since relase $latest_release:\\n\\n$(echo ${message_list//"/})"
+          echo "$body"
 
           # Create release
-          curl -d "{\"body\": \"$body\", \"tag_name\": \"$RELEASE\", \"target_commitish\": \"main\" }" https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/release -H "Authorization: token $GH_TOKEN" -H "Content-Type: application/json"
+          curl -d "{\"body\": \"$body\", \"tag_name\": \"$RELEASE\", \"target_commitish\": \"main\" }" https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/release -H "Authorization: token ${{ secrets.GH_TOKEN }}" -H "Content-Type: application/json"
