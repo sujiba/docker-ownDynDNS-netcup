@@ -100,7 +100,7 @@ jobs:
 
           while [[ $fin == 0 ]]; do
 
-            commit_time=$(date --date="$(< /tmp/last_50_commits.json jq -r --arg -i "$i" '.[$i|tonumber] | .created' )");
+            commit_time=$(date --date="$(< /tmp/last_50_commits.json jq -r --arg i "$i" '.[$i|tonumber] | .created' )");
 
             if [[ $(date -d "$latest_release_time" +%s) -le $(date -d "$commit_time" +%s) ]]; then
               echo "$i $commit_time"
@@ -109,7 +109,6 @@ jobs:
               fin=1;
             fi
           done
-
 
           # Generate list of commit messages since latest release for release message
           j=0
