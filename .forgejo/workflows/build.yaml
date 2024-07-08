@@ -9,7 +9,7 @@ jobs:
   release_tag:
     runs-on: ubuntu-latest
     outputs:
-      release: steps.create_release.outputs.release
+      release: steps.create_release.outputs.RELEASE
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,7 +28,7 @@ jobs:
 
           # increase the counter, if the release is from the same year and month
           if [[ $(date +'%Y') == $year ]] && [[ $(date +'%m') == $month ]]; then
-            ((counter++));
+            counter=$(($counter + 1));
           # else reset counter
           else
             counter=1;
@@ -36,14 +36,14 @@ jobs:
 
           # Create 
           new_release=$(date +'%Y').$(date +'%m').$counter
-          echo "release=$new_release">> $GITHUB_OUTPUT
+          echo "RELEASE=$new_release">> $GITHUB_OUTPUT
           echo "Release $new_release successfully set"
 
   build:
-    runs-on: ubuntu-latest
     needs: release_tag
+    runs-on: ubuntu-latest
     env:
-      release_tag: ${{needs.release_tag.outputs.release}}
+      RELEASE: ${{ needs.release_tag.outputs.release }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,5 +72,64 @@ jobs:
           push: true
           cleanup: true
           tags: |
-            ${{ secrets.DOCKER_USER }}/docker-owndyndns-netcup:${{needs.release_tag.outputs.release}}
+            ${{ secrets.DOCKER_USER }}/docker-owndyndns-netcup:$RELEASE
             ${{ secrets.DOCKER_USER }}/docker-owndyndns-netcup:latest
+
+  publish_release:
+    needs: [release_tag, build]
+    runs-on: ubuntu-latest
+    env:
+      RELEASE: ${{ needs.release_tag.outputs.release }}
+      GH_TOKEN: "${{ secrets.GH_TOKEN }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Create new release
+        shell: bash
+        run: |
+          echo $RELEASE
+          # Get latest release "created at" timestemp
+          latest_release=$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .tag_name')
+          latest_release_time=$(date -d $(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .created_at')))
+          echo "Last release from $latest_release_time"
+
+          # Get last 50 commits
+          curl -s "https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/commits?limit=50" > /tmp/last_50_commits.json
+
+          # Count commits (max. 50) between now and the latest release
+          i=0
+          fin=0
+
+          while [[ $fin == 0 ]]; do
+
+            commit_time=$(date --date=$(cat /tmp/last_50_commits.json | jq -r --arg -i "$i" '.[$i|tonumber] | .created' ));
+
+            if [[ $(date -d "$latest_release_time" +%s) -le $(date -d "$commit_time" +%s) ]]; then
+              echo "$i $commit_time"
+              i=$(($i + 1));
+            else
+              fin=1;
+            fi
+          done
+
+
+          # Generate list of commit messages since latest release for release message
+          j=0
+          release_list=""
+
+          while [[ "$j" != "$i" ]]; do
+            message=$(cat /tmp/last_50_commits.json | jq -r --args j "$j" '.[$j|tonumber] | .commit.message')
+            echo "$j $message"
+            message_newline="${message}\n\""
+            message_list="$message_list* $message_newline"
+            j=$(($j + 1))
+          done
+
+          # Generate release message
+          datetime=$(env TZ=Europe/Berlin date "+%A, %d.%m.%Y at %R")
+          body="Create automatically on $datetime by forgejo action \\n\\n $i commit(s) since relase $latest_release:\\n\\n$(echo $message_list | sed 's/"//g')"
+          echo $body
+
+          # Create release
+          curl -d "{\"body\": \"$body\", \"tag_name\": \"$RELEASE\", \"target_commitish\": \"main\" }" https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/release -H "Authorization: token $GH_TOKEN" -H "Content-Type: application/json"
