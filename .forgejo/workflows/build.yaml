@@ -36,7 +36,11 @@ jobs:
 
           # Create 
           new_release=$(date +'%Y').$(date +'%m').$counter
+<<<<<<< HEAD
           echo "RELEASE=$new_release">> $GITHUB_OUTPUT
+=======
+          echo "release=$new_release">> "$GITHUB_OUTPUT"
+>>>>>>> 6ca7a3e (fix(action): outputs)
           echo "Release $new_release successfully set"
 
   build:
