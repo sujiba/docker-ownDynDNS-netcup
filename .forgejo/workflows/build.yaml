@@ -78,7 +78,7 @@ jobs:
           cleanup: true
           tags: |
             ${{ secrets.DOCKER_USER }}/docker-owndyndns-netcup:latest
-            ${{ secrets.DOCKER_USER }}/docker-owndyndns-netcup:$RELEASE
+            ${{ secrets.DOCKER_USER }}/docker-owndyndns-netcup:${{ needs.release_tag.outputs.release }}
 
   publish_release:
     needs: [release_tag, build]
