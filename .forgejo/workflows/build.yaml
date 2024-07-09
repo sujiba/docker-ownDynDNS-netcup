@@ -19,7 +19,7 @@ jobs:
         shell: bash
         run: |
           # Get latest release.
-          latest_release=$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .tag_name')
+          latest_release=$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases/latest | jq -r .tag_name)
 
           # Cut release into year, month and counter.
           year=$(echo $latest_release | awk -F '.' '//{print $1}')
@@ -88,8 +88,7 @@ jobs:
         shell: bash
         run: |
           # Get latest release "created at" timestemp
-          latest_release=$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .tag_name')
-          latest_release_time=$(date -d "$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases\?limit\=1 | jq -r '.[] | .created_at')")
+          latest_release_time=$(date -d "$(curl -s https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases/latest | jq -r .created_at)")
           echo "Last release from $latest_release_time"
 
           # Get last 50 commits
@@ -125,7 +124,7 @@ jobs:
 
           # Generate release message
           datetime=$(env TZ=Europe/Berlin date "+%A, %d.%m.%Y at %R")
-          body="Automatically created on $datetime by forgejo action \\n\\n $i commit(s) since relase $latest_release:\\n\\n$(echo $message_list | sed 's/"//g' | sed 's/README.md docker-build docker-compose.yaml example.config renovate.json/*/g')"
+          body="Automatically created on $datetime by forgejo action \\n\\n $i commit(s) since last relase:\\n\\n$(echo $message_list | sed 's/"//g' | sed 's/README.md docker-build docker-compose.yaml example.config renovate.json/*/g')"
           echo "$body"
 
           # Create release
