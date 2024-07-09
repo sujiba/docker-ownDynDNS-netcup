@@ -129,4 +129,4 @@ jobs:
           echo "$body"
 
           # Create release
-          curl -d "{\"body\": \"$body\", \"tag_name\": \"$RELEASE\", \"target_commitish\": \"main\" }" https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/release -H "Authorization: token $GH_TOKEN" -H "Content-Type: application/json"
+          curl -d "{\"body\": \"$body\", \"tag_name\": \"$RELEASE\", \"target_commitish\": \"main\" }" https://git.smail.koeln/api/v1/repos/homelab/docker-ownDynDNS-netcup/releases -H "Authorization: token $GH_TOKEN" -H "Content-Type: application/json"
