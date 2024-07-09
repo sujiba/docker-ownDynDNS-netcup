@@ -124,7 +124,7 @@ jobs:
 
           # Generate release message
           datetime=$(env TZ=Europe/Berlin date "+%A, %d.%m.%Y at %R")
-          body="Create automatically on $datetime by forgejo action \\n\\n $i commit(s) since relase $latest_release:\\n\\n$(echo ${message_list//"/})"
+          body="Create automatically on $datetime by forgejo action \\n\\n $i commit(s) since relase $latest_release:\\n\\n$(echo ${message_list//\"/})"
           echo "$body"
 
           # Create release
