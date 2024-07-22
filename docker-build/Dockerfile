@@ -12,7 +12,7 @@ WORKDIR /var/www/html
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
+    apt-get install -y --no-install-recommends && \
       libxml2-dev && \
     docker-php-ext-install soap && \
     apt-get clean -y
