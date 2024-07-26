@@ -9,7 +9,7 @@
 ## acknowledgments
 
 This container is based on the work of:
-* [PHP](https://hub.docker.com/_/php)
+* [Docker PHP](https://hub.docker.com/_/php)
 * [Fernwerker ownDynDNS](https://github.com/fernwerker/ownDynDNS)
 
 ## Netcup configuration
