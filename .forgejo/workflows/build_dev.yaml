@@ -6,7 +6,41 @@ on:
       - dev
 
 jobs:
+  release_tag:
+    runs-on: ubuntu-latest
+    outputs:
+      new_release: ${{ steps.create_release.outputs.NEW_RELEASE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get latest release and create new release
+        id: create_release
+        shell: bash
+        run: |
+          ### Get latest release.
+          latest_release=$(curl -s ${{ env.GITHUB_API_URL }}/repos/${{ env.GITHUB_REPOSITORY }}/releases/latest | jq -r .tag_name)
+
+          ### Cut release into year, month and counter.
+          year=$(echo $latest_release | awk -F '.' '//{print $1}')
+          month=$(echo $latest_release | awk -F '.' '//{print $2}')
+          counter=$(echo $latest_release | awk -F '.' '//{print $3}')
+
+          ### Increase counter, if the release is from the same year and month
+          if [[ $(date +'%Y') == $year ]] && [[ $(date +'%m') == $month ]]; then
+            counter=$(($counter + 1));
+          # else reset counter
+          else
+            counter=0;
+          fi
+
+          ### Create new release tag
+          new_release=$(date +'%Y').$(date +'%m').$counter
+          echo "NEW_RELEASE=$new_release" >> "$GITHUB_OUTPUT"
+          echo "Release $new_release successfully set"
+
   build-dev:
+    needs: [release_tag]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,3 +71,58 @@ jobs:
           cleanup: true
           tags: |
             ${{ secrets.DOCKER_USER }}/docker-owndyndns-netcup:dev
+
+  publish_release:
+    needs: [release_tag, build]
+    runs-on: ubuntu-latest
+    env:
+      NEW_RELEASE: ${{ needs.release_tag.outputs.new_release }}
+      GH_TOKEN: "${{ secrets.RENOVATE_TOKEN }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Create new release
+        shell: bash
+        run: |
+          ### Get latest release "created at" timestemp
+          latest_release_time=$(date -d "$(curl -s ${{ env.GITHUB_API_URL }}/repos/${{ env.GITHUB_REPOSITORY }}/releases/latest | jq -r .created_at)")
+          echo "Last release from $latest_release_time"
+
+          ### Get last 50 commits
+          curl -s "${{ env.GITHUB_API_URL }}/repos/${{ env.GITHUB_REPOSITORY }}/commits?limit=50" > /tmp/last_50_commits.json
+
+          ### Count commits (max. 50) between now and the latest release
+          i=0
+          fin=0
+
+          while [[ $fin == 0 ]]; do
+
+            commit_time=$(date --date="$(< /tmp/last_50_commits.json jq -r --arg i "$i" '.[$i|tonumber] | .created' )");
+
+            if [[ $(date -d "$latest_release_time" +%s) -le $(date -d "$commit_time" +%s) ]]; then
+              echo "$i $commit_time"
+              i=$((i + 1))
+            else
+              fin=1;
+            fi
+          done
+
+          ### Generate list of commit messages since latest release for release message
+          j=0
+          message_list=""
+
+          while [[ "$j" != "$i" ]]; do
+            message=$(< /tmp/last_50_commits.json jq -r --arg j "$j" '.[$j|tonumber] | .commit.message')
+            echo "$j $message"
+            message_newline="${message}\n\""
+            message_list="$message_list* $message_newline"
+            j=$((j + 1))
+          done
+
+          ### Generate release message
+          datetime=$(env TZ=Europe/Berlin date "+%A, %d.%m.%Y at %R")
+          body="$i commit(s) since last relase:\\n\\n$(echo $message_list | sed 's/"//g' | sed 's/README.md docker-build docker-compose.yaml example.config renovate.json/*/g')"
+          echo "Release Message Body: $body"
+
+          ### Ends with no release
