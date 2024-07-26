@@ -1,6 +1,6 @@
-# ownDynDNS-netcup
+# docker-ownDynDNS-netcup
 
-- [ownDynDNS-netcup](#owndyndns-netcup)
+- [docker-ownDynDNS-netcup](#docker-owndyndns-netcup)
   - [acknowledgments](#acknowledgments)
   - [Netcup configuration](#netcup-configuration)
   - [Container configuration](#container-configuration)
