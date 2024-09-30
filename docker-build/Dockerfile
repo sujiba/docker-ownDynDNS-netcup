@@ -7,7 +7,7 @@ RUN apk update && \
     git clone https://github.com/fernwerker/ownDynDNS.git
 
 # Build container to run the app
-FROM php:8.3.11-apache
+FROM php:8.3.12-apache
 WORKDIR /var/www/html
 
 RUN apt-get update && \
