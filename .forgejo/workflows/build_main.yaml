@@ -56,11 +56,13 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+        with:
+          endpoint: tcp://docker:2376
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          endpoint: tcp://docker-in-docker:2375
+          endpoint: tcp://docker:2376
 
       - name: Build and push
         uses: docker/build-push-action@v6
