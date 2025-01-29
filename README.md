@@ -1,5 +1,7 @@
 # docker-ownDynDNS-netcup
 
+[![Worklfow](https://git.smail.koeln/homelab/docker-ownDynDNS-netcup/badges/workflows/build_main.yaml/badge.svg)](https://git.smail.koeln/homelab/docker-ownDynDNS-netcup) [![Release](https://git.smail.koeln/homelab/docker-ownDynDNS-netcup/badges/release.svg)](https://git.smail.koeln/homelab/docker-ownDynDNS-netcup) 
+
 - [docker-ownDynDNS-netcup](#docker-owndyndns-netcup)
   - [acknowledgments](#acknowledgments)
   - [Netcup configuration](#netcup-configuration)
