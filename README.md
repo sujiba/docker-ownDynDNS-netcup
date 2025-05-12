@@ -15,22 +15,27 @@ This container is based on the work of:
 * [Fernwerker ownDynDNS](https://github.com/fernwerker/ownDynDNS)
 
 ## Netcup configuration
-You need to create your dns entries beforehand:
+You need to create two dns entries beforehand:
 
-| Host     | Type  | Destination  |
+| Host     | Type  | Destination  | 
 |----------|-------|--------------|
-| vpn      | AAAA  | IPv6         |
+| vpn      | AAAA  | IPv6         | 
 | vpn      | A     | IPv4         |
+| ddns     | AAAA  | IPv6         | 
+| ddns     | A     | IPv4         |
+
+vpn.example.com -> the domain that gets updated
+ddns.example.com -> the domain your Fritz!Box calls for updates
 
 ## Container configuration
-Create docker-compose.yml and config in your app directory i.e.:
+Create compose.yml and config in your app directory i.e.:
 
 ```
 mkdir -p /opt/docker/owndyndns
 cd /opt/docker/owndyndns
 
 # Create docker-compose.yml and copy the contents from repository file
-vi docker-compose.yml
+vi compose.yml
 
 # Create config, copy the contents from repository example.config and change the parameters
 vi config
@@ -43,8 +48,8 @@ docker compose up -d
 * Login to your Fritz!Box
 * Go to /Internet/Freigabe/DynDNS
 * Set mark on "DynDNS benutzen"
-* Enter Update-URL: `https://<url of your webspace>/update.php?user=<username>&password=<pass>&ipv4=<ipaddr>&ipv6=<ip6addr>&domain=<domain>`
-    * You only have to change `https://<url of your webspace>` (http without valid TLS certificate)
+* Enter Update-URL: `https://ddns.example.com/update.php?user=<username>&password=<pass>&ipv4=<ipaddr>&ipv6=<ip6addr>&domain=<domain>`
+    * You only have to change `https://ddns.example.com` (http without valid TLS certificate)
 * Domainname: `vpn.example.com`
 * Username: Defined in config 
 * Password: Defined in config
