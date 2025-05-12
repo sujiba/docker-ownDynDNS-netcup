@@ -25,6 +25,7 @@ You need to create two dns entries beforehand:
 | ddns     | A     | IPv4         |
 
 vpn.example.com -> the domain that gets updated
+
 ddns.example.com -> the domain your Fritz!Box calls for updates
 
 ## Container configuration
