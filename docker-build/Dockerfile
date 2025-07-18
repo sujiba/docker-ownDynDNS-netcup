@@ -1,5 +1,5 @@
 # Get latest app version
-FROM alpine:3.22.0
+FROM alpine:3.22.1
 WORKDIR /clone-workspace
 RUN apk update && \
     apk upgrade && \
@@ -7,7 +7,7 @@ RUN apk update && \
     git clone https://github.com/fernwerker/ownDynDNS.git
 
 # Build container to run the app
-FROM php:8.4.8-apache
+FROM php:8.4.10-apache
 WORKDIR /var/www/html
 
 RUN apt-get update && \
