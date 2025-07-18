@@ -3,12 +3,19 @@
   "extends": [
     "local>homelab/renovate-config"
   ],
-  "baseBranches": ["main"],
+  "baseBranchPatterns": [
+    "main"
+  ],
   "useBaseBranchConfig": "merge",
   "packageRules": [
     {
       "description": "Automerge dependency updates",
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
       "automerge": true
     }
   ]
