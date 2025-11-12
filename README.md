@@ -1,3 +1,5 @@
+# ARCHIVE: Moving to headscale
+
 # docker-ownDynDNS-netcup
 
 [![Worklfow](https://code.offene.cloud/homelab/docker-ownDynDNS-netcup/badges/workflows/build_main.yaml/badge.svg)](https://code.offene.cloud/homelab/docker-ownDynDNS-netcup) [![Release](https://code.offene.cloud/homelab/docker-ownDynDNS-netcup/badges/release.svg)](https://code.offene.cloud/homelab/docker-ownDynDNS-netcup/releases) 
